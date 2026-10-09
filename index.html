@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bingo da Quermesse — cartelas para imprimir e cantador de pedras</title>
+  <meta name="description" content="Gere cartelas de bingo de 75 números para imprimir (1, 2 ou 4 por folha A4), cante as pedras com painel e voz em português e confira qualquer cartela pelo número e código.">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎱</text></svg>">
+  <link rel="stylesheet" href="./styles.css">
+  <style id="tamanho-pagina">@page{size:A4 portrait;margin:0}</style>
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Bingo da Quermesse</h1>
+    <p class="lead">Cartelas de 75 números para imprimir, cantador de pedras e conferência de cartelas. Para quermesse, festa junina, escola e família.</p>
+  </header>
+
+  <main>
+    <div class="tabs" role="tablist" aria-label="Escolha o que fazer">
+      <button type="button" role="tab" id="tab-cartelas" data-hash="cartelas" aria-controls="painel-cartelas" aria-selected="true">Cartelas</button>
+      <button type="button" role="tab" id="tab-cantar" data-hash="cantar" aria-controls="painel-cantar" aria-selected="false" tabindex="-1">Cantar pedras</button>
+      <button type="button" role="tab" id="tab-conferir" data-hash="conferir" aria-controls="painel-conferir" aria-selected="false" tabindex="-1">Conferir cartela</button>
+    </div>
+
+    <section id="painel-cartelas" role="tabpanel" aria-labelledby="tab-cartelas">
+      <form id="form-cartelas" class="card" novalidate>
+        <div class="field">
+          <label for="c-titulo">Título</label>
+          <input id="c-titulo" maxlength="60" autocomplete="off" placeholder="Ex.: Bingo da Quermesse da Paróquia Exemplo">
+        </div>
+        <div class="field">
+          <label for="c-info">Informações extras <span class="muted">(opcional)</span></label>
+          <input id="c-info" maxlength="80" autocomplete="off" placeholder="Ex.: Sábado, 20/06, no salão paroquial">
+        </div>
+        <div class="grid three">
+          <div class="field">
+            <label for="c-primeira">Primeira cartela</label>
+            <input id="c-primeira" type="number" min="1" max="9999" step="1" value="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="c-quantidade">Quantidade</label>
+            <input id="c-quantidade" type="number" min="1" max="1000" step="1" value="20" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="c-codigo">Código das cartelas</label>
+            <div class="input-row">
+              <input id="c-codigo" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="c-codigo-dica">
+              <button type="button" class="btn secondary" id="c-novo-codigo">Outro</button>
+            </div>
+          </div>
+        </div>
+        <p class="hint" id="c-codigo-dica">Guarde o código: com ele e o número, qualquer cartela pode ser refeita e conferida depois. Mesmo código e mesmo número sempre dão a mesma cartela.</p>
+        <fieldset class="segmented">
+          <legend>Cartelas por folha A4</legend>
+          <label class="check"><input type="radio" name="c-por-folha" value="1"> 1 (grande)</label>
+          <label class="check"><input type="radio" name="c-por-folha" value="2"> 2 (folha deitada)</label>
+          <label class="check"><input type="radio" name="c-por-folha" value="4" checked> 4</label>
+        </fieldset>
+        <label class="check"><input type="checkbox" id="c-livre" checked> Centro livre (a casa do meio já vale como marcada)</label>
+        <p class="form-error" id="c-erro" role="alert" hidden></p>
+        <div class="actions">
+          <button type="button" class="btn big" id="c-imprimir">Imprimir</button>
+        </div>
+        <p class="hint" id="c-resumo" aria-live="polite"></p>
+      </form>
+      <div class="sheets" id="folhas" role="region" aria-label="Prévia das folhas para imprimir" tabindex="0"></div>
+    </section>
+
+    <section id="painel-cantar" role="tabpanel" aria-labelledby="tab-cantar" hidden>
+      <div class="card caller">
+        <p class="ball-caption" id="pedra-legenda">Nenhuma pedra sorteada ainda</p>
+        <div class="ball" id="pedra" aria-hidden="true">
+          <span class="ball-letter" id="pedra-letra"></span>
+          <span class="ball-number" id="pedra-numero">?</span>
+        </div>
+        <p class="sr-only" id="pedra-anuncio" aria-live="assertive"></p>
+        <p class="ball-count" id="pedra-contagem">0 de 75 pedras</p>
+        <div class="actions center">
+          <button type="button" class="btn big" id="sortear-pedra">Sortear pedra</button>
+          <button type="button" class="btn secondary" id="desfazer-pedra">Desfazer última</button>
+          <button type="button" class="btn secondary" id="novo-jogo">Novo jogo</button>
+        </div>
+        <label class="check center-check"><input type="checkbox" id="voz"> Falar as pedras em voz alta (português)</label>
+        <p class="hint center" id="voz-aviso" hidden></p>
+        <p class="status center" id="cantar-status" role="status"></p>
+      </div>
+      <div class="card">
+        <h2>Painel</h2>
+        <div class="board" id="painel-pedras"></div>
+      </div>
+      <div class="card">
+        <h2>Pedras sorteadas <span class="muted">(da mais recente para a primeira)</span></h2>
+        <p class="hint" id="historico-vazio">Nenhuma ainda.</p>
+        <ol class="history" id="historico" reversed></ol>
+      </div>
+    </section>
+
+    <section id="painel-conferir" role="tabpanel" aria-labelledby="tab-conferir" hidden>
+      <form id="form-conferir" class="card" novalidate>
+        <div class="grid two">
+          <div class="field">
+            <label for="v-numero">Número da cartela</label>
+            <input id="v-numero" type="number" min="1" max="9999" step="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="v-codigo">Código das cartelas</label>
+            <input id="v-codigo" maxlength="40" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="field">
+          <label for="v-padrao">Padrão</label>
+          <select id="v-padrao">
+            <option value="line">Linha (horizontal, vertical ou diagonal)</option>
+            <option value="corners">Quatro cantos</option>
+            <option value="full">Cartela cheia</option>
+          </select>
+        </div>
+        <label class="check"><input type="checkbox" id="v-livre" checked> Cartelas com centro livre</label>
+        <p class="hint">A conferência usa as pedras cantadas neste navegador, na aba “Cantar pedras”.</p>
+        <p class="form-error" id="v-erro" role="alert" hidden></p>
+        <div class="actions">
+          <button type="submit" class="btn big">Conferir</button>
+        </div>
+      </form>
+      <section class="card" id="v-resultado" hidden aria-live="polite">
+        <p class="verdict" id="v-veredito"></p>
+        <p class="hint" id="v-detalhe"></p>
+        <div class="check-card" id="v-cartela"></div>
+        <p class="hint" id="v-faltam"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Tudo roda no seu navegador. Código aberto no <a href="https://github.com/micdog22/bingo-quermesse">GitHub</a> · Licença MIT</p>
+  </footer>
+</body>
+</html>

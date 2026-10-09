@@ -1,0 +1,11 @@
+{
+  "name": "bingo-quermesse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cartelas de bingo de 75 números para imprimir, cantador de pedras com voz e conferência de cartelas pelo número e código.",
+  "type": "module",
+  "scripts": { "test": "node --test" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/micdog22/bingo-quermesse.git" },
+  "homepage": "https://micdog22.github.io/bingo-quermesse/"
+}
