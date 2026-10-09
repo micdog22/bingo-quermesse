@@ -23,7 +23,7 @@ function assertValidCard(card) {
   assert.equal(grid[2][2] === null, card.freeCenter);
 }
 
-test('letras das pedras: B 1–15, I 16–30, N 31–45, G 46–60, O 61–75', () => {
+test('letras das pedras: B 1-15, I 16-30, N 31-45, G 46-60, O 61-75', () => {
   const expected = { 1: 'B', 15: 'B', 16: 'I', 30: 'I', 31: 'N', 45: 'N', 46: 'G', 60: 'G', 61: 'O', 75: 'O' };
   for (const [n, letter] of Object.entries(expected)) assert.equal(letterOf(Number(n)), letter);
   assert.equal(ballLabel(42), 'N 42');

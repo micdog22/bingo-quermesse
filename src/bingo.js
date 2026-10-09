@@ -15,7 +15,7 @@ export class BingoError extends Error {
 
 /* ---------- pedras ---------- */
 
-/** B 1–15, I 16–30, N 31–45, G 46–60, O 61–75. */
+/** B 1-15, I 16-30, N 31-45, G 46-60, O 61-75. */
 export function letterOf(n) {
   if (!Number.isInteger(n) || n < 1 || n > TOTAL_BALLS) throw new RangeError(`Pedra inválida: ${n}`);
   return LETTERS[Math.floor((n - 1) / 15)];

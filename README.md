@@ -1,4 +1,4 @@
-# Bingo da Quermesse — cartelas para imprimir e cantador de pedras (HTML + CSS + JS)
+# Bingo da Quermesse: cartelas para imprimir e cantador de pedras (HTML + CSS + JS)
 
 Tudo o que um bingo de quermesse, festa junina, escola ou família precisa, numa página só: gerar e imprimir as cartelas, cantar as pedras com painel e voz, e conferir na hora se a cartela de quem gritou "bingo!" está certa.
 
@@ -6,7 +6,7 @@ Tudo o que um bingo de quermesse, festa junina, escola ou família precisa, numa
 
 ## Recursos
 
-- Bingo de **75 pedras**: B 1–15, I 16–30, N 31–45, G 46–60, O 61–75.
+- Bingo de **75 pedras**: B de 1 a 15, I de 16 a 30, N de 31 a 45, G de 46 a 60 e O de 61 a 75.
 - Cartelas 5×5 com **centro livre** opcional, título e uma linha de informações (data, local).
 - **1, 2 ou 4 cartelas por folha A4**, com número da cartela e código impressos. Duas por folha sai com a folha deitada, para as cartelas ficarem maiores.
 - Cada cartela é sempre a mesma para o mesmo **código + número**: dá para conferir qualquer cartela depois, mesmo sem guardar as folhas. Num mesmo código, todas as cartelas são diferentes.
@@ -55,4 +55,4 @@ Issues e pull requests são bem-vindos.
 
 ## Licença
 
-MIT — veja [LICENSE](LICENSE).
+MIT. Veja [LICENSE](LICENSE).
